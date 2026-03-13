@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Imóveis – Marketplace Imóveis{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <h1>Imóveis</h1>
+  <form method="get" class="search-form">
+    {{ form.q }}
+    {{ form.tipo_anuncio }}
+    {{ form.tipo_imovel }}
+    {{ form.valor_min }}
+    {{ form.valor_max }}
+    {{ form.quartos }}
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+  </form>
+
+  <div class="card-grid">
+    {% for imovel in page_obj %}
+      <a href="{{ imovel.get_absolute_url }}" class="card">
+        <div class="card-image">
+          {% if imovel.imagens.first %}
+            <img src="{{ imovel.imagens.first.imagem.url }}" alt="{{ imovel.titulo }}">
+          {% else %}
+            <div class="card-placeholder">Sem imagem</div>
+          {% endif %}
+          <span class="card-badge">{{ imovel.get_tipo_anuncio_display }}</span>
+        </div>
+        <div class="card-body">
+          <h3>{{ imovel.titulo|truncatewords:8 }}</h3>
+          <p class="card-meta">{{ imovel.cidade }}, {{ imovel.estado }}</p>
+          <p class="card-meta">{{ imovel.quartos }} quartos · {{ imovel.area_m2|default:"–" }} m²</p>
+          <p class="card-price">R$ {{ imovel.valor|floatformat:0|intcomma }}</p>
+        </div>
+      </a>
+    {% empty %}
+      <p>Nenhum imóvel encontrado.</p>
+    {% endfor %}
+  </div>
+
+  {% if page_obj.has_other_pages %}
+    <nav class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% for k,v in request.GET.items %}{% if k != 'page' %}&{{ k }}={{ v }}{% endif %}{% endfor %}">Anterior</a>
+      {% endif %}
+      <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% for k,v in request.GET.items %}{% if k != 'page' %}&{{ k }}={{ v }}{% endif %}{% endfor %}">Próxima</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+</section>
+{% endblock %}

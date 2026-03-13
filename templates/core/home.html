@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Início – Marketplace Imóveis{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <h1>Encontre o imóvel ideal</h1>
+    <p>Venda e aluguel de casas, apartamentos e comerciais.</p>
+    <form action="{% url 'properties:list' %}" method="get" class="hero-search">
+      <input type="text" name="q" placeholder="Cidade, bairro ou título..." value="{{ request.GET.q }}">
+      <select name="tipo_anuncio">
+        <option value="">Venda ou Aluguel</option>
+        <option value="venda" {% if request.GET.tipo_anuncio == 'venda' %}selected{% endif %}>Venda</option>
+        <option value="aluguel" {% if request.GET.tipo_anuncio == 'aluguel' %}selected{% endif %}>Aluguel</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+  </div>
+</section>
+
+<section class="container section">
+  <h2>Imóveis em destaque</h2>
+  <div class="card-grid">
+    {% for imovel in destaques %}
+      <a href="{{ imovel.get_absolute_url }}" class="card">
+        <div class="card-image">
+          {% if imovel.imagens.first %}
+            <img src="{{ imovel.imagens.first.imagem.url }}" alt="{{ imovel.titulo }}">
+          {% else %}
+            <div class="card-placeholder">Sem imagem</div>
+          {% endif %}
+          <span class="card-badge">{{ imovel.get_tipo_anuncio_display }}</span>
+        </div>
+        <div class="card-body">
+          <h3>{{ imovel.titulo|truncatewords:8 }}</h3>
+          <p class="card-meta">{{ imovel.cidade }}, {{ imovel.estado }}</p>
+          <p class="card-meta">{{ imovel.quartos }} quartos · {{ imovel.area_m2|default:"–" }} m²</p>
+          <p class="card-price">R$ {{ imovel.valor|floatformat:0|intcomma }}</p>
+        </div>
+      </a>
+    {% empty %}
+      <p>Nenhum imóvel em destaque no momento.</p>
+    {% endfor %}
+  </div>
+  <p class="text-center"><a href="{% url 'properties:list' %}" class="btn btn-secondary">Ver todos os imóveis</a></p>
+</section>
+{% endblock %}

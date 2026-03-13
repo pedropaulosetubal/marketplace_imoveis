@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro – Marketplace Imóveis{% endblock %}
+
+{% block content %}
+<section class="container section auth-form">
+  <h1>Cadastrar</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+  </form>
+  <p><a href="{% url 'accounts:login' %}">Já tem conta? Entrar</a></p>
+</section>
+{% endblock %}
