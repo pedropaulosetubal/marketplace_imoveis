@@ -4,7 +4,43 @@
 {% block title %}Início – Marketplace Imóveis{% endblock %}
 
 {% block content %}
-<section class="hero">
+<section style="background:#0f172a;color:white;padding:80px 20px;text-align:center;">
+  <div class="container">
+
+      <h1 style="font-size:42px;margin-bottom:10px;">
+          Encontre o imóvel ideal
+      </h1>
+
+      <p style="opacity:0.8;margin-bottom:30px;">
+          Casas, apartamentos e imóveis comerciais
+      </p>
+
+      <form action="{% url 'properties:list' %}" method="get">
+
+          <input
+              type="text"
+              name="q"
+              placeholder="Cidade, bairro ou título..."
+              style="padding:12px;width:300px;border-radius:8px;border:none;margin-right:10px;"
+          >
+
+          <select name="tipo_anuncio" style="padding:12px;border-radius:8px;border:none;margin-right:10px;">
+              <option value="">Venda ou aluguel</option>
+              <option value="venda">Venda</option>
+              <option value="aluguel">Aluguel</option>
+          </select>
+
+          <button
+              type="submit"
+              style="padding:12px 20px;background:#22c55e;border:none;border-radius:8px;color:white;font-weight:bold;"
+          >
+              Buscar
+          </button>
+
+      </form>
+
+  </div>
+</section>
   <div class="container">
     <h1>Encontre o imóvel ideal</h1>
     <p>Venda e aluguel de casas, apartamentos e comerciais.</p>
