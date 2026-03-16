@@ -98,7 +98,7 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "core:home"
 LOGOUT_REDIRECT_URL = "core:home"
 
-# Segurança: headers e cookies em produção
+# Segurança: headers e cookies
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
@@ -107,7 +107,12 @@ CSRF_COOKIE_HTTPONLY = False  # False para AJAX com CSRF token no header
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
 
+# Quando atrás de proxy (Railway, Heroku etc.), confiar no header de HTTPS
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 if not DEBUG:
+    # Em plataformas como Railway, muitas vezes já há redirecionamento HTTPS.
+    # Pode ser controlado via variável de ambiente SECURE_SSL_REDIRECT.
     SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
