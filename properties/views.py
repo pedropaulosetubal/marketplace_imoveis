@@ -23,6 +23,8 @@ def list_view(request):
             qs = qs.filter(tipo_anuncio=data["tipo_anuncio"])
         if data.get("tipo_imovel"):
             qs = qs.filter(tipo_imovel=data["tipo_imovel"])
+        if data.get("cidade"):
+            qs = qs.filter(cidade=data["cidade"])
         if data.get("valor_min") is not None:
             qs = qs.filter(valor__gte=data["valor_min"])
         if data.get("valor_max") is not None:
