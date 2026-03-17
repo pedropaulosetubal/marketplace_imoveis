@@ -11,7 +11,7 @@ MAX_IMAGE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024
 class PropertyImageForm(forms.ModelForm):
     class Meta:
         model = PropertyImage
-        fields = "__all__"
+        fields = "__all__"  
 
     def clean_imagem(self):
         arquivo = self.cleaned_data.get("imagem")
