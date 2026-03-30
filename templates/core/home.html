@@ -1,85 +1,72 @@
 {% extends "base.html" %}
-{% load humanize %}
-
-{% block title %}Início – Marketplace Imóveis{% endblock %}
 
 {% block content %}
-<section style="background:#0f172a;color:white;padding:80px 20px;text-align:center;">
-  <div class="container">
 
-      <h1 style="font-size:42px;margin-bottom:10px;">
-          Encontre o imóvel ideal
-      </h1>
+<!-- HERO -->
+<section style="background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa') center/cover; padding: 100px 0; color: white; text-align: center;">
+    <div class="container">
+        <h1>Encontre o imóvel ideal</h1>
+        <p>Casas, apartamentos e imóveis comerciais para venda e aluguel.</p>
 
-      <p style="opacity:0.8;margin-bottom:30px;">
-          Casas, apartamentos e imóveis comerciais
-      </p>
+        <form method="GET" action="#">
+            <input type="text" name="q" placeholder="Cidade, bairro ou título..." style="padding:10px; width:250px;">
+            
+            <select name="tipo" style="padding:10px;">
+                <option value="">Venda ou aluguel</option>
+                <option value="venda">Venda</option>
+                <option value="aluguel">Aluguel</option>
+            </select>
 
-      <form action="{% url 'properties:list' %}" method="get">
-
-          <input
-              type="text"
-              name="q"
-              placeholder="Cidade, bairro ou título..."
-              style="padding:12px;width:300px;border-radius:8px;border:none;margin-right:10px;"
-          >
-
-          <select name="tipo_anuncio" style="padding:12px;border-radius:8px;border:none;margin-right:10px;">
-              <option value="">Venda ou aluguel</option>
-              <option value="venda">Venda</option>
-              <option value="aluguel">Aluguel</option>
-          </select>
-
-          <button
-              type="submit"
-              style="padding:12px 20px;background:#22c55e;border:none;border-radius:8px;color:white;font-weight:bold;"
-          >
-              Buscar
-          </button>
-
-      </form>
-
-  </div>
-</section>
-  <div class="container">
-    <h1>Encontre o imóvel ideal</h1>
-    <p>Venda e aluguel de casas, apartamentos e comerciais.</p>
-    <form action="{% url 'properties:list' %}" method="get" class="hero-search">
-      <input type="text" name="q" placeholder="Cidade, bairro ou título..." value="{{ request.GET.q }}">
-      <select name="tipo_anuncio">
-        <option value="">Venda ou Aluguel</option>
-        <option value="venda" {% if request.GET.tipo_anuncio == 'venda' %}selected{% endif %}>Venda</option>
-        <option value="aluguel" {% if request.GET.tipo_anuncio == 'aluguel' %}selected{% endif %}>Aluguel</option>
-      </select>
-      <button type="submit" class="btn btn-primary">Buscar</button>
-    </form>
-  </div>
+            <button type="submit" style="padding:10px 20px; background:green; color:white;">Buscar</button>
+        </form>
+    </div>
 </section>
 
-<section class="container section">
-  <h2>Imóveis em destaque</h2>
-  <div class="card-grid">
-    {% for imovel in destaques %}
-      <a href="{{ imovel.get_absolute_url }}" class="card">
-        <div class="card-image">
-          {% if imovel.imagens.first %}
-            <img src="{{ imovel.imagens.first.imagem.url }}" alt="{{ imovel.titulo }}">
-          {% else %}
-            <div class="card-placeholder">Sem imagem</div>
-          {% endif %}
-          <span class="card-badge">{{ imovel.get_tipo_anuncio_display }}</span>
-        </div>
-        <div class="card-body">
-          <h3>{{ imovel.titulo|truncatewords:8 }}</h3>
-          <p class="card-meta">{{ imovel.cidade }}, {{ imovel.estado }}</p>
-          <p class="card-meta">{{ imovel.quartos }} quartos · {{ imovel.area_m2|default:"–" }} m²</p>
-          <p class="card-price">R$ {{ imovel.valor|floatformat:0|intcomma }}</p>
-        </div>
-      </a>
-    {% empty %}
-      <p>Nenhum imóvel em destaque no momento.</p>
-    {% endfor %}
-  </div>
-  <p class="text-center"><a href="{% url 'properties:list' %}" class="btn btn-secondary">Ver todos os imóveis</a></p>
-</section>
+
+<!-- DESTAQUES -->
+<div class="container mt-5">
+    <h2>Imóveis em destaque</h2>
+    <p>Confira alguns anúncios em evidência na plataforma.</p>
+
+    <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        
+        {% for property in destaques %}
+            <div style="border:1px solid #ddd; border-radius:10px; width:300px; overflow:hidden;">
+
+                <!-- IMAGEM -->
+                {% if property.imagens.first %}
+                    <img src="{{ property.imagens.first.imagem.url }}" style="width:100%; height:200px; object-fit:cover;">
+                {% else %}
+                    <img src="https://placehold.co/400x250?text=Imovel" style="width:100%; height:200px;">
+                {% endif %}
+
+                <div style="padding:15px;">
+                    <h3>{{ property.titulo }}</h3>
+
+                    <p>{{ property.cidade }} - {{ property.estado }}</p>
+
+                    <p style="font-weight:bold;">
+                        R$ {{ property.valor }}
+                    </p>
+
+                    <a href="#" style="display:inline-block; padding:10px; background:#0d6efd; color:white; border-radius:5px;">
+                        Ver detalhes
+                    </a>
+                </div>
+
+            </div>
+        {% empty %}
+            <p>Nenhum imóvel em destaque.</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+<!-- COMO FUNCIONA -->
+<div class="container mt-5">
+    <h2>Como funciona</h2>
+    <p>Publique, encontre e negocie imóveis com praticidade.</p>
+</div>
+
 {% endblock %}

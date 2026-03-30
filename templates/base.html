@@ -8,41 +8,42 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  <header class="header">
-    <div class="container header-inner">
-      <a href="{% url 'core:home' %}" class="logo">Marketplace Imóveis</a>
-      <nav class="nav">
-        <a href="{% url 'core:home' %}">Início</a>
+
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">Marketplace Imóveis</a>
+
+      <nav class="nav-links">
+        <a href="/">Início</a>
         <a href="{% url 'properties:list' %}">Imóveis</a>
-        {% if user.is_authenticated %}
-          <a href="{% url 'admin:index' %}">Admin</a>
-          <span class="user">{{ user.get_full_name|default:user.username }}</span>
-          <a href="{% url 'accounts:logout' %}">Sair</a>
-        {% else %}
-          <a href="{% url 'accounts:login' %}">Entrar</a>
-          <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Cadastrar</a>
-        {% endif %}
+        <a href="#">Entrar</a>
+        <a href="#" class="btn-primary">Cadastrar</a>
       </nav>
     </div>
   </header>
 
-  <main class="main">
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li class="message message-{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+  <main>
     {% block content %}{% endblock %}
   </main>
 
   <footer class="footer">
-    <div class="container">
-      <p>&copy; {% now "Y" %} Marketplace Imóveis. Todos os direitos reservados.</p>
+    <div class="container footer-content">
+      <div>
+        <h3>Marketplace Imóveis</h3>
+        <p>Uma plataforma para anunciar, encontrar e negociar imóveis com mais praticidade.</p>
+      </div>
+
+      <div>
+        <h4>Links úteis</h4>
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="{% url 'properties:list' %}">Imóveis</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Termos de uso</a></li>
+        </ul>
+      </div>
     </div>
   </footer>
-  <script src="{% static 'js/main.js' %}"></script>
-  {% block extra_js %}{% endblock %}
+
 </body>
 </html>
